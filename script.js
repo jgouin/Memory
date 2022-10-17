@@ -1,3 +1,11 @@
+// gerer le bug du clic deux fois sur la même image 
+// gerer le nombre de cartes à touver 
+// gerer le mode aleatoire 
+// gerer le debut et la fin de la partie
+// pouvoir relancer une partie
+// gerer le nombre de parties gargnées
+
+
 let TableGame;
 let allCards = document.querySelectorAll(".card");
 let cptclickCurrent = 0;
@@ -53,5 +61,11 @@ function playGame (card){
         // on reset aussi la valeur du dataImageShowed pour pouvoir rejouer l'action
 
     }
-    if 
+    let elementFound = document.getElementsByName('found')
+
+    for(let elementFound of elements) {
+      if (elementFound.hasAttribute('class')) {
+        console.log(element.innerText)
+      }
+    }
 }

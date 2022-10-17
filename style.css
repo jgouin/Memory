@@ -1,24 +1,39 @@
 #GameBoard {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .card {
     margin: 10px;
+    transition: 0.5s;
+    width: 113px;
+    height: 150px;
+    border: grey 2px solid;
+    
 }
+.images {
+    width: 113px;
+    height: 150px;
+}
+
 .card:hover{
     cursor: pointer;
 }
-.card.hidden p {
+.card.hidden img {
     visibility: hidden;
 }
-.card.show p{
+    
+.card.show img{
     visibility: visible;
 }
 
 .card.hidden {
-    background-color: red;
+    transform: rotateY(180deg);
+    background-image: url(/img/plage.jpg);
+    background-position: center;
+    background-size: contain;
 }
 .card.found {
-    color: green;
+    border: solid 2px grey;
+    opacity: 0.5;
 }
