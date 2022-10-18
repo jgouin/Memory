@@ -5,23 +5,28 @@
 // pouvoir relancer une partie
 // gerer le nombre de parties gargnées
 
-
+/* Déclaration des variables */
 let TableGame;
 let allCards = document.querySelectorAll(".card");
 let cptclickCurrent = 0;
 let dataImageShowed;
 
 
-// Permet de masquer ou de démasquer les élements 
+// Déclartion des évènements
+// J'ajoute l'évèneemnts clique sur chaque carte 
 allCards.forEach(card => {
     card.addEventListener("click", function(){
-        playGame(card);
+        clickOnCardEvent(card);
     });
 });
 
-function playGame (card){
+// Fonction qui gère ce qui se passe sur chaque clique de carte
+function clickOnCardEvent (card){
+    if (card.classList.contains("found")) {
+        // Return signifie "tu ne fais pas cette fonction"
+        return;
+    }
     cptclickCurrent ++;
-
     if (cptclickCurrent == 1){
         // premier clique, je cache les images trouvées avant 
         allCards.forEach(card => {
@@ -37,28 +42,33 @@ function playGame (card){
         // j'affiche la carte sur laquelle je viens de cliquer
         card.classList.remove("hidden");
         // je stocke la valeur de la carte
-        dataImageShowed = card.dataset.image;
+        cardClickedId = card.id;
     }
     else if(cptclickCurrent == 2){
         // deuxieme clique, je vérifie si l'image à été trouvée
-        card.classList.remove("hidden");
-         if (dataImageShowed == card.dataset.image) {
-            allCards.forEach(card => {
-                if (card.classList.contains("hidden")){
-                    // c'est une carte cachée 
-                }
-                else {
-                    card.classList.add("found");
-                    // c'est une carte trouvée
-                }
-                    
-            });
+        if (cardClickedId == card.id) {
+            cptclickCurrent = 1;
         }
-        cptclickCurrent = 0;
-        // Pour savoir si j'ai déjà découvert une ou deux cartes
-        // remise à zéro car on est dans le esle if et on ne veut pas qu'il y ait plus de 2 cliques
-        dataImageShowed = "";
-        // on reset aussi la valeur du dataImageShowed pour pouvoir rejouer l'action
+        else {
+            card.classList.remove("hidden");
+            let cardClickedBefore = document.getElementById(cardClickedId);
+            if (cardClickedBefore.dataset.image == card.dataset.image) {
+                allCards.forEach(card => {
+                    if (card.classList.contains("hidden")){
+                    // c'est une carte cachée 
+                    }
+                    else {
+                       card.classList.add("found");
+                    // c'est une carte trouvée
+                    }   
+                });
+            }
+            cptclickCurrent = 0;
+            // Pour savoir si j'ai déjà découvert une ou deux cartes
+            // remise à zéro car on est dans le esle if et on ne veut pas qu'il y ait plus de 2 cliques
+            cardClickedId = "";
+            // on reset aussi la valeur du cardClickedId pour pouvoir rejouer l'action
+        }
 
     }
     let elementFound = document.getElementsByName('found')
