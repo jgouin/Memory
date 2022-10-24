@@ -7,21 +7,19 @@
 
 /* Déclaration des variables */
 let TableGame;
-let allCards = document.querySelectorAll(".card");
+
 let cptclickCurrent = 0;
-let dataImageShowed;
+let cardClickedId;
+//let dataImageShowed;
+const cards = ["RoiCarreau", "RoiCoeur", "DameTrefle", "ValetTrefle", "DamePique", "ValetPique"];
+const gameBoard = document.getElementById("gameBoard");
 
 
-// Déclartion des évènements
-// J'ajoute l'évèneemnts clique sur chaque carte 
-allCards.forEach(card => {
-    card.addEventListener("click", function(){
-        clickOnCardEvent(card);
-    });
-});
+
 
 // Fonction qui gère ce qui se passe sur chaque clique de carte
 function clickOnCardEvent (card){
+    let allCards = document.querySelectorAll(".card");
     if (card.classList.contains("found")) {
         // Return signifie "tu ne fais pas cette fonction"
         return;
@@ -73,9 +71,56 @@ function clickOnCardEvent (card){
     }
     let elementFound = document.getElementsByName('found')
 
-    for(let elementFound of elements) {
+    for(let elementFound of element){
       if (elementFound.hasAttribute('class')) {
         console.log(element.innerText)
       }
     }
+}
+// je crée une fonction "initGame" avec une variable qui équivaut au nombre de paires souhaitées
+function initGame(nbPaires){
+    gameBoard.innerHTML += "";
+    // je crée mon tableau "gameCards" qui est vide pour le moment
+    let gameCard = []; 
+    // Tant que ma variable i est inférieur au nombre de paires souhaitées, tu ajoutes deux cartes similaires "cards[i]"
+    for (let i = 0; i < nbPaires; i++){
+        gameCard.push([cards[i], false]);
+        gameCard.push([cards[i], false]);
+    }
+    console.log(gameCard);
+    // Pour la longueur de mon paquet de cartes (tableau)
+    for (let i = 0; i < gameCard.length; i ++){
+        //Tant que le tableau de mon paquet de cartes n'est pas complet
+        let cardPosition = false;
+        while (!cardPosition){
+            // Reprend un nombre aléatoire et rejoue le pour lui trouver une place
+            let randomNumber = getRandomeArbitrairy (0, gameCard.length);
+            if (gameCard[randomNumber][1] == false){
+                cardPosition = true;
+                gameCard[randomNumber][1] = true;
+                // Génère code HTLM et l'ajoute 
+                let htmlCard = getHtmlCodeCard (gameCard[randomNumber][0], i);
+                gameBoard.innerHTML += htmlCard;
+            }
+        }
+        
+    }
+    // Déclartion des évènements
+    // J'ajoute l'évèneemnts clique sur chaque carte 
+    let allCards = document.querySelectorAll(".card");
+    allCards.forEach(card => {
+        card.addEventListener("click", function(){
+            clickOnCardEvent(card);
+        });
+    });
+}
+
+function getRandomeArbitrairy(min, max){
+    return Math.floor(Math.random() * (max-min) + min);
+}
+
+function getHtmlCodeCard(cardName, id){
+    return`<div class="card hidden" id="${id}" data-image="${cardName}">
+            <img class="images" src="img/${cardName}.png" />
+    </div>`;
 }
