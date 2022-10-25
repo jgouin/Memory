@@ -13,8 +13,14 @@ let cardClickedId;
 //let dataImageShowed;
 const cards = ["RoiCarreau", "RoiCoeur", "DameTrefle", "ValetTrefle", "DamePique", "ValetPique"];
 const gameBoard = document.getElementById("gameBoard");
+let nbPairesOnGame;
+let cptCardFound = 0;
 
-
+document.getElementById('playButton').addEventListener("click", function(){
+    let nbCardPlayed = document.getElementById('nbCardPlayed');
+    initGame(nbCardPlayed.value);
+}
+)
 
 
 // Fonction qui gère ce qui se passe sur chaque clique de carte
@@ -55,8 +61,9 @@ function clickOnCardEvent (card){
                     if (card.classList.contains("hidden")){
                     // c'est une carte cachée 
                     }
-                    else {
+                    else if (!card.classList.contains("found")) {
                        card.classList.add("found");
+                       cptCardFound++;
                     // c'est une carte trouvée
                     }   
                 });
@@ -66,6 +73,9 @@ function clickOnCardEvent (card){
             // remise à zéro car on est dans le esle if et on ne veut pas qu'il y ait plus de 2 cliques
             cardClickedId = "";
             // on reset aussi la valeur du cardClickedId pour pouvoir rejouer l'action
+            if (cptCardFound == nbPairesOnGame * 2) {
+                alert("Gagné!");
+            }
         }
 
     }
@@ -79,7 +89,9 @@ function clickOnCardEvent (card){
 }
 // je crée une fonction "initGame" avec une variable qui équivaut au nombre de paires souhaitées
 function initGame(nbPaires){
+    nbPairesOnGame = nbPaires;
     gameBoard.innerHTML += "";
+    cptCardFound = 0;
     // je crée mon tableau "gameCards" qui est vide pour le moment
     let gameCard = []; 
     // Tant que ma variable i est inférieur au nombre de paires souhaitées, tu ajoutes deux cartes similaires "cards[i]"
